@@ -6,7 +6,7 @@
 /*   By: wchen <wchen@42studen>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:45 by wchen             #+#    #+#             */
-/*   Updated: 2022/11/20 20:21:53 by wchen            ###   ########.fr       */
+/*   Updated: 2022/11/21 20:37:26 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ int	main(int argc, char **argv)
 	if (!ft_strlen(send_str))
 	{
 		ft_printf("wrong send string\n");
-		return (0);
+		return (1);
 	}
 	signal(SIGUSR1, client_handler);
 	server_pid = ft_atoi(argv[1]);
 	send_char(server_pid, send_str);
 	ft_printf("server received : %d bytes\n", g_byte);
+	return (0);
 }

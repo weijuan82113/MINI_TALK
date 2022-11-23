@@ -6,7 +6,7 @@
 /*   By: wchen <wchen@42studen>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:40 by wchen             #+#    #+#             */
-/*   Updated: 2022/11/20 20:37:52 by wchen            ###   ########.fr       */
+/*   Updated: 2022/11/21 20:37:30 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ int	main(void)
 	if (sigaction(SIGUSR2, &sact, NULL) == -1)
 		msg_exit("sigaction wrong in SIGUSR2\n", EXIT_FAILURE);
 	ft_printf("PID : %d \n", getpid());
-	fflush(stdout);
-	printf("wait for singal...\n");
+	ft_printf("wait for singal...\n");
 	while (1)
 		pause();
 	return (0);
