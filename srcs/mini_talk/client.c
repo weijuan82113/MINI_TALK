@@ -6,7 +6,7 @@
 /*   By: wchen <wchen@42studen>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:45 by wchen             #+#    #+#             */
-/*   Updated: 2022/11/21 20:37:26 by wchen            ###   ########.fr       */
+/*   Updated: 2022/11/24 08:12:17 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 volatile sig_atomic_t	g_byte = 0;
 
-void	client_handler(int sig_num)
+static void	client_handler(int sig_num)
 {
 	if (sig_num == SIGUSR1)
 		g_byte++;
 }
 
-void	send_char(pid_t server_pid, char *send_str)
+static void	send_char(pid_t server_pid, char *send_str)
 {
 	char	send_chr;
 	int		i;
