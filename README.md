@@ -6,7 +6,7 @@ The subject introduction
 Mandatory Part
 ou must create a communication program in the form of a client and a server.
 • The server must be started first. After its launch, it has to print its PID.
-• The client takes two parameters: 
+• The client takes two parameters:
     ◦ The server PID.
     ◦ The string to send.
 • The client must send the string passed as a parameter to the server.
@@ -20,3 +20,5 @@ Bonus part
 • The server acknowledges every message received by sending back a signal to the client.
 • Unicode characters support!
 
+modify history
+#
