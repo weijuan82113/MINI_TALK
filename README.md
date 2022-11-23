@@ -21,4 +21,4 @@ Bonus part
 • Unicode characters support!
 
 modify history
-#
+#20221124 add sigmask to SIGUSR1 & SIGUSR2
