@@ -6,7 +6,7 @@
 /*   By: wchen <wchen@42studen>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:40 by wchen             #+#    #+#             */
-/*   Updated: 2022/11/24 08:11:56 by wchen            ###   ########.fr       */
+/*   Updated: 2022/11/24 08:50:47 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	sever_action(int signum, siginfo_t *s_info, void *ucontext)
 	(void)ucontext;
 	if (signum == SIGUSR1)
 		s_chr += 0x00 << bit;
-	else
+	else if (signum)
 		s_chr += 0x01 << bit;
 	bit++;
 	if (bit == 8)
@@ -40,8 +40,10 @@ int	main(void)
 	sact.sa_sigaction = sever_action;
 	if (sigemptyset(&sact.sa_mask) == -1)
 		msg_exit("sigemptyset wrong\n", EXIT_FAILURE);
-	sigaddset(&sact.sa_mask, SIGUSR1);
-	sigaddset(&sact.sa_mask, SIGUSR2);
+	if (sigaddset(&sact.sa_mask, SIGUSR1))
+		msg_exit("sigaddset wrong in SIGUSR1\n", EXIT_FAILURE);
+	if(sigaddset(&sact.sa_mask, SIGUSR2))
+		msg_exit("sigaddset wrong in SIGUSR2\n", EXIT_FAILURE);
 	sact.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sact, NULL) == -1)
 		msg_exit("sigaction wrong in SIGUSR1\n", EXIT_FAILURE);
