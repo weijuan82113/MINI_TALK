@@ -6,7 +6,7 @@
 #    By: wchen <wchen@42studen>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 10:56:47 by wchen             #+#    #+#              #
-#    Updated: 2022/11/20 20:43:20 by wchen            ###   ########.fr        #
+#    Updated: 2022/11/24 22:37:15 by wchen            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,7 @@ CFLAGS			=	-Wall -Wextra -Werror -I $(INCLUDES_DIR)
 # MAIN_OBJ		=	$(MAIN:.c=.o)
 
 INCLUDES_DIR	=	./includes
-INCLUDES		=	$(addprefix $(INCLUDES_DIR),/push_swap.h	\
-												/ft_printf.h	\
+INCLUDES		=	$(addprefix $(INCLUDES_DIR),/ft_printf.h	\
 												)				\
 ##libft
 LIBFT_DIR		=	./libft/

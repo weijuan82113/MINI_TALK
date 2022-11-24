@@ -6,18 +6,18 @@
 /*   By: wchen <wchen@42studen>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:45 by wchen             #+#    #+#             */
-/*   Updated: 2022/11/24 08:12:17 by wchen            ###   ########.fr       */
+/*   Updated: 2022/11/25 01:09:26 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
 
-volatile sig_atomic_t	g_byte = 0;
+volatile sig_atomic_t	g_bit = 0;
 
 static void	client_handler(int sig_num)
 {
 	if (sig_num == SIGUSR1)
-		g_byte++;
+		g_bit++;
 }
 
 static void	send_char(pid_t server_pid, char *send_str)
@@ -32,10 +32,16 @@ static void	send_char(pid_t server_pid, char *send_str)
 		while (i < 8)
 		{
 			if (send_chr & 0x01)
-				kill(server_pid, SIGUSR2);
+			{
+				if(kill(server_pid, SIGUSR2) != 0)
+					msg_exit("kill wrong in SIGUSR1\n", EXIT_FAILURE);
+			}
 			else
-				kill(server_pid, SIGUSR1);
-			usleep(500);
+			{
+				if(kill(server_pid, SIGUSR1) != 0)
+					msg_exit("kill wrong in SIGUSR1\n", EXIT_FAILURE);
+			}
+			pause();
 			send_chr = send_chr >> 1;
 			i++;
 		}
@@ -47,21 +53,24 @@ int	main(int argc, char **argv)
 {
 	char	*send_str;
 	pid_t	server_pid;
+	struct sigaction sigact;
 
+	ft_bzero(&sigact, sizeof(struct sigaction));
+	sigact.sa_handler = client_handler;
+	if (sigemptyset(&sigact.sa_mask))
+		msg_exit("sigemptyset wrong\n", EXIT_FAILURE);
+	sigact.sa_flags = SA_RESTART;
+  	if(sigaction(SIGUSR1, &sigact, NULL))
+		msg_exit("sigaction wrong in SIGUSR1\n", EXIT_FAILURE);
 	if (argc != 3)
-	{
-		ft_printf("wrong variables\n");
-		return (1);
-	}
+		msg_exit("wrong variables\n", EXIT_FAILURE);
 	send_str = argv[2];
 	if (!ft_strlen(send_str))
-	{
-		ft_printf("wrong send string\n");
-		return (1);
-	}
-	signal(SIGUSR1, client_handler);
+		msg_exit("wrong send string\n", EXIT_FAILURE);
 	server_pid = ft_atoi(argv[1]);
+	if (server_pid == 0)
+		msg_exit("wrong pid\n", EXIT_FAILURE);
 	send_char(server_pid, send_str);
-	ft_printf("server received : %d bytes\n", g_byte);
+	ft_printf("server received : %d bytes\n", g_bit/8);
 	return (0);
 }
