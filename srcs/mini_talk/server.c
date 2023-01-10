@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wchen <wchen@42studen>                     +#+  +:+       +#+        */
+/*   By: wchen <wchen@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:40 by wchen             #+#    #+#             */
-/*   Updated: 2022/11/24 22:40:30 by wchen            ###   ########.fr       */
+/*   Updated: 2023/01/11 00:32:29 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,19 @@ static void	server_action(int signum, siginfo_t *s_info, void *ucontext)
 	static unsigned int	s_chr = 0;
 
 	(void)ucontext;
+	usleep(50);
 	if (signum == SIGUSR1)
+	{
 		s_chr += 0x00 << bit;
-	else if (signum)
-		s_chr += 0x01 << bit;
-	if (kill(s_info->si_pid, SIGUSR1) != 0)
+		if (kill(s_info->si_pid, SIGUSR1) != 0)
 			msg_exit("kill wrong in SIGUSR1\n", EXIT_FAILURE);
+	}
+	else if (signum)
+	{
+		s_chr += 0x01 << bit;
+		if (kill(s_info->si_pid, SIGUSR1) != 0)
+			msg_exit("kill wrong in SIGUSR1\n", EXIT_FAILURE);
+	}
 	bit++;
 	if (bit == 8)
 	{
@@ -41,11 +48,6 @@ int	main(void)
 	sact.sa_sigaction = server_action;
 	if (sigemptyset(&sact.sa_mask) == -1)
 		msg_exit("sigemptyset wrong\n", EXIT_FAILURE);
-	if (sigaddset(&sact.sa_mask, SIGUSR1))
-		msg_exit("sigaddset wrong in SIGUSR1\n", EXIT_FAILURE);
-	if(sigaddset(&sact.sa_mask, SIGUSR2))
-		msg_exit("sigaddset wrong in SIGUSR2\n", EXIT_FAILURE);
-	sact.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sact, NULL) == -1)
 		msg_exit("sigaction wrong in SIGUSR1\n", EXIT_FAILURE);
 	if (sigaction(SIGUSR2, &sact, NULL) == -1)
