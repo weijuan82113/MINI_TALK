@@ -6,7 +6,7 @@
 /*   By: wchen <wchen@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:45 by wchen             #+#    #+#             */
-/*   Updated: 2023/01/11 00:30:13 by wchen            ###   ########.fr       */
+/*   Updated: 2023/01/11 22:08:37 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(int argc, char **argv)
 		msg_exit("wrong pid\n", EXIT_FAILURE);
 	ft_bzero(&sigact, sizeof(struct sigaction));
 	sigact.sa_handler = client_action;
-	sigact.sa_flags = SA_RESTART;
+	sigact.sa_flags = SA_NODEFER;
   	if(sigaction(SIGUSR1, &sigact, NULL))
 		msg_exit("sigaction wrong in SIGUSR1\n", EXIT_FAILURE);
 	send_char(server_pid, send_str);

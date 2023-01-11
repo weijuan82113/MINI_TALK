@@ -6,7 +6,7 @@
 /*   By: wchen <wchen@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 00:40:40 by wchen             #+#    #+#             */
-/*   Updated: 2023/01/11 00:32:29 by wchen            ###   ########.fr       */
+/*   Updated: 2023/01/11 22:08:39 by wchen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(void)
 
 	ft_bzero(&sact, sizeof(struct sigaction));
 	sact.sa_sigaction = server_action;
+	sact.sa_flags = SA_SIGINFO;
 	if (sigemptyset(&sact.sa_mask) == -1)
 		msg_exit("sigemptyset wrong\n", EXIT_FAILURE);
 	if (sigaction(SIGUSR1, &sact, NULL) == -1)
